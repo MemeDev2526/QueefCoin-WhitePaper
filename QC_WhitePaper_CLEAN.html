@@ -60,14 +60,13 @@ strong{ font-weight: 800; }
 }
 
 /* Optional on-screen page bg (disabled) */
-/*
+
 body{
   background-image: var(--page-bg-url);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }
-*/
 
 .highlight{
   font-weight: 800;
@@ -124,6 +123,24 @@ body{
   opacity: .95;
 }
 
+/* ===== END PAGE ===== */
+.endpage{
+  page-break-before: always;
+  min-height: 100vh;
+  position: relative;
+  background: var(--black);
+}
+.endpage::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image: var(--endpage-url);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain; /* or 'cover' */
+}
+@media print{
+  .endpage{ break-before: page; }
+}
 
 /* ===== COVER PAGE ===== */
 
@@ -152,19 +169,21 @@ body{
 
 /* ===== GLOBAL WATERMARK ===== */
 
-body.watermarked::before{
+.watermarked .section::before,
+.watermarked .print-toc::before {
   content:"";
-  position: fixed;
-  inset: 0;
-  background-image: var(--watermark-url); /* swap later for data URI */
-  background-position: center center;
+  position:absolute; inset:0;
+  background-image: var(--watermark-url);
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain; /* or 'cover' if you prefer */
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 0;
+  background-size: contain;
+  opacity:.15;
+  pointer-events:none;
+  z-index:0;
 }
-
+.section, .print-toc { position: relative; z-index:1; }
+  /* Pages without watermark */
+.no-watermark::before { content:none !important; }
 /* Ensure content sits above watermark */
 #content { position: relative; z-index: 1; }
 .coverpage::before{ content:none !important; }
@@ -959,6 +978,7 @@ details[open] summary::before{ content:"▼ "; color: var(--orange); }
 <p>Side effects may include joy, community, and the unstoppable urge to <em class="slogan">glorify the puff</em>.</p>
 <p><em class="slogan">💨 Pump the Puff. Don’t fade the Puff.</em></p>
 </section>
+<section class="endpage no-watermark" aria-hidden="true"></section>
 </main>
 </div>
 <script>
@@ -1108,4 +1128,5 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 
 </body>
+
 </html>
