@@ -169,24 +169,34 @@ body{
 
 
 /* ===== GLOBAL WATERMARK ===== */
-.watermarked .section::before,
-.watermarked .print-toc::before{
-  content:"";
-  position:absolute; inset:0;
-  background-image: var(--watermark-url);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;  /* try 80% auto if you want it smaller */
-  opacity:.15;
-  pointer-events:none;
-  z-index:0;
+@media print {
+  .watermarked .section::before,
+  .watermarked .print-toc::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: var(--watermark-url);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity:.15;
+    pointer-events:none;
+    z-index:0;
+    -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+  }
+
+  /* opt-out on specific pages/blocks */
+  .watermarked .section.no-watermark::before,
+  .watermarked .print-toc.no-watermark::before{
+    content:none !important;
+  }
 }
 
-/* Opt-out per-page */
-.watermarked .section.no-watermark::before,
-.watermarked .print-toc.no-watermark::before{
-  content:none !important;
-}
+/* ensure content is above the watermark */
+.section, .print-toc { position: relative; z-index: 1; }
+
+/* cover never gets a watermark */
+.coverpage::before{ content:none !important; }
 .section, .print-toc { position: relative; z-index:1; }
   /* Pages without watermark */
 .no-watermark::before { content:none !important; }
@@ -275,6 +285,17 @@ h1 + *, h2 + *, h3 + *{ page-break-before: avoid; break-before: avoid; }
 /* ===== TOC toggle icons ===== */
 details summary::before{ content:"► "; color: var(--orange); font-weight:700; margin-right:4px; }
 details[open] summary::before{ content:"▼ "; color: var(--orange); }
+
+  /* SCREEN-ONLY PAGE BG */
+@media screen {
+  body{
+    background-image: var(--page-bg-url);
+    background-position: center center;
+    background-size: auto;        /* no zoom/stretch */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+}
 
 </style>
 </head>
@@ -1136,6 +1157,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 </body>
 
 </html>
+
 
 
 
