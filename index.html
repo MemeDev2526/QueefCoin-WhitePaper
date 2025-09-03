@@ -169,9 +169,8 @@ body{
 
 /* ===== GLOBAL WATERMARK ===== */
 
-.watermarked .section::before,
-.watermarked .print-toc::before {
-  content:"";
+.watermarked .section.no-watermark::before,
+.watermarked .print-toc.no-watermark::before { content:none !important; }
   position:absolute; inset:0;
   background-image: var(--watermark-url);
   background-position: center;
@@ -1130,3 +1129,4 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 </body>
 
 </html>
+
