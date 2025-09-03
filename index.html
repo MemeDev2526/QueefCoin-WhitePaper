@@ -13,7 +13,7 @@
   /* Paths or data URIs */
   --cover-url: url("assets/Cover.png");         /* Title/cover full page */
   --watermark-url: url("assets/Watermark.png");  /* Faint logo on pages */
-  --page-bg-url: url("assets/Cover.png");           /* Optional page bg */
+  --page-bg-url: url("assets/Watermark.png");           /* Optional page bg */
   --endpage-url: url("assets/Endpage.png");      /* optional endpage image */
 
   /* Brand tokens */
@@ -169,17 +169,23 @@ body{
 
 
 /* ===== GLOBAL WATERMARK ===== */
-
-.watermarked .section.no-watermark::before,
-.watermarked .print-toc.no-watermark::before { content:none !important; }
+.watermarked .section::before,
+.watermarked .print-toc::before{
+  content:"";
   position:absolute; inset:0;
   background-image: var(--watermark-url);
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: contain;  /* try 80% auto if you want it smaller */
   opacity:.15;
   pointer-events:none;
   z-index:0;
+}
+
+/* Opt-out per-page */
+.watermarked .section.no-watermark::before,
+.watermarked .print-toc.no-watermark::before{
+  content:none !important;
 }
 .section, .print-toc { position: relative; z-index:1; }
   /* Pages without watermark */
@@ -210,8 +216,8 @@ h1 + *, h2 + *, h3 + *{ page-break-before: avoid; break-before: avoid; }
   .wrap{ display:block; padding:0; }
   main{ max-width:none; margin:0; }
   body{ background: var(--black) !important; }
-
-  .section{
+ .section{
+    background: linear-gradient(180deg, rgba(14,14,14,.75) 0%, rgba(13,13,13,.75) 100%);
     border-radius:0; border:none; box-shadow:none;
     min-height: 100vh;
     padding: 21mm 20mm 24mm;
@@ -978,7 +984,7 @@ details[open] summary::before{ content:"▼ "; color: var(--orange); }
 <p>Side effects may include joy, community, and the unstoppable urge to <em class="slogan">glorify the puff</em>.</p>
 <p><em class="slogan">💨 Pump the Puff. Don’t fade the Puff.</em></p>
 </section>
-<section class="endpage no-watermark" aria-hidden="true"></section>
+<section class="endpage"></section>
 </main>
 </div>
 <script>
@@ -1130,4 +1136,5 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 </body>
 
 </html>
+
 
